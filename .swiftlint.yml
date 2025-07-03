@@ -1,0 +1,190 @@
+# SwiftLint Configuration for Mythos iOS
+
+# 包含的文件路径
+included:
+  - Sources
+  - MythosApp/Sources
+  - Tests
+
+# 排除的文件路径
+excluded:
+  - .build
+  - .swiftpm
+  - DerivedData
+  - Packages
+  - "**/*.generated.swift"
+  - "**/*.pb.swift"
+
+# 禁用的规则
+disabled_rules:
+  - trailing_whitespace # 因为编辑器自动处理
+  - todo # 允许TODO注释
+  - force_cast # 在某些情况下需要强制转换
+  - shorthand_operator # 保持代码清晰
+
+# 启用的可选规则
+opt_in_rules:
+  - array_init
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - contains_over_first_not_nil
+  - empty_count
+  - empty_string
+  - enum_case_associated_values_count
+  - explicit_init
+  - extension_access_modifier
+  - fallthrough
+  - file_header
+  - first_where
+  - flatmap_over_map_reduce
+  - identical_operands
+  - joined_default_parameter
+  - last_where
+  - legacy_random
+  - literal_expression_end_indentation
+  - lower_acl_than_parent
+  - modifier_order
+  - nimble_operator
+  - nslocalizedstring_key
+  - number_separator
+  - object_literal
+  - operator_usage_whitespace
+  - overridden_super_call
+  - override_in_extension
+  - pattern_matching_keywords
+  - prefer_self_type_over_type_of_self
+  - private_action
+  - private_outlet
+  - prohibited_super_call
+  - quick_discouraged_call
+  - quick_discouraged_focused_test
+  - quick_discouraged_pending_test
+  - raw_value_for_camel_cased_codable_enum
+  - reduce_into
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - single_test_class
+  - sorted_first_last
+  - static_operator
+  - strong_iboutlet
+  - toggle_bool
+  - trailing_closure
+  - unneeded_parentheses_in_closure_argument
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+
+# 自定义规则配置
+file_length:
+  warning: 500
+  error: 1000
+  ignore_comment_only_lines: true
+
+line_length:
+  warning: 120
+  error: 200
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+
+function_body_length:
+  warning: 60
+  error: 100
+
+function_parameter_count:
+  warning: 6
+  error: 8
+
+type_body_length:
+  warning: 300
+  error: 500
+
+type_name:
+  min_length: 3
+  max_length: 50
+  excluded:
+    - ID
+    - URL
+    - API
+
+identifier_name:
+  min_length:
+    error: 2
+  max_length:
+    warning: 50
+    error: 60
+  excluded:
+    - id
+    - ID
+    - url
+    - URL
+    - api
+    - API
+    - jwt
+    - JWT
+
+nesting:
+  type_level:
+    warning: 2
+    error: 3
+
+cyclomatic_complexity:
+  warning: 15
+  error: 25
+
+# 文件头部模板
+file_header:
+  required_pattern: |
+                    \/\/
+                    \/\/  .*\.swift
+                    \/\/  Mythos iOS
+                    \/\/
+                    \/\/  Created by .* on \d{1,2}\/\d{1,2}\/\d{4}\.
+                    \/\/
+
+# 自定义规则
+custom_rules:
+  # 禁止使用 print，应使用 logger
+  no_print:
+    name: "No Print"
+    regex: '(^|\s)print\s*\('
+    message: "Use logger instead of print for production code"
+    severity: warning
+    
+  # 强制使用 async/await 而不是 completion handlers
+  prefer_async_await:
+    name: "Prefer async/await"
+    regex: '\) -> Void\)\s*\{'
+    message: "Consider using async/await instead of completion handlers"
+    severity: warning
+    
+  # 确保所有网络调用都有错误处理
+  network_error_handling:
+    name: "Network Error Handling"
+    regex: 'try\s+await\s+\w+\.\w+\([^)]*\)\s*$'
+    message: "Network calls should have proper error handling"
+    severity: warning
+    
+  # 强制使用类型安全的字符串
+  no_hardcoded_strings:
+    name: "No Hardcoded Strings"
+    regex: '"[^"]{10,}"'
+    message: "Consider using localized strings or constants for long text"
+    severity: warning
+    
+  # 确保 @MainActor 的正确使用
+  mainactor_usage:
+    name: "MainActor Usage"
+    regex: '@MainActor\s+(?!class|struct|enum|protocol|func|var|let)'
+    message: "Ensure @MainActor is used correctly"
+    severity: warning
+
+# 报告类型
+reporter: "xcode"
+
+# 严格模式 - 将警告视为错误
+strict: false
+
+# 缓存路径
+cache_path: .swiftlint_cache 
