@@ -25,7 +25,7 @@ public enum APIEndpoint {
     case createBook
     case updateBook(bookId: String)
     case deleteBook(bookId: String)
-    case booksByAuthor(authorId: String)
+    case booksByUser(userId: String)
     case booksByGenre(genre: String)
     case featuredBooks
     case trendingBooks
@@ -169,7 +169,7 @@ extension APIEndpoint {
         case .createBook: return "/books"
         case .updateBook(let bookId): return "/books/\(bookId)"
         case .deleteBook(let bookId): return "/books/\(bookId)"
-        case .booksByAuthor(let authorId): return "/books/author/\(authorId)"
+        case .booksByUser(let userId): return "/books/user/\(userId)"
         case .booksByGenre(let genre): return "/books/genre/\(genre)"
         case .featuredBooks: return "/books/featured"
         case .trendingBooks: return "/books/trending"

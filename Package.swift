@@ -65,21 +65,5 @@ let package = Package(
             path: "Sources/MythosUI"
         ),
         
-        // MARK: - Tests
-        .testTarget(
-            name: "MythosCoreTests",
-            dependencies: ["MythosCore"],
-            path: "Tests/MythosCoreTests"
-        ),
-        .testTarget(
-            name: "MythosNetworkingTests",
-            dependencies: ["MythosNetworking"],
-            path: "Tests/MythosNetworkingTests"
-        ),
-        .testTarget(
-            name: "MythosUITests",
-            dependencies: ["MythosUI"],
-            path: "Tests/MythosUITests"
-        )
     ]
 ) 

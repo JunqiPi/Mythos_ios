@@ -22,22 +22,22 @@ public final class AuthenticationService: @unchecked Sendable {
             "password": password
         ]
         
-        let response: LoginResponse = try await apiClient.post(
+        let response: ApiResponse<LoginData> = try await apiClient.post(
             .login,
             parameters: parameters,
             requiresAuth: false
         )
         
         // 保存认证令牌
-        await apiClient.setAuthToken(response.token)
+        await apiClient.setAuthToken(response.data.token)
         
         // 缓存用户信息
-        if let userData = try? JSONEncoder().encode(response.user) {
+        if let userData = try? JSONEncoder().encode(response.data.user) {
             UserDefaults.standard.set(userData, forKey: "current_user")
         }
         
-        logger.info("Login successful for user: \(response.user.username)")
-        return response.user
+        logger.info("Login successful for user: \(response.data.user.username)")
+        return response.data.user
     }
     
     // MARK: - Register
@@ -247,27 +247,37 @@ public final class AuthenticationService: @unchecked Sendable {
 }
 
 // MARK: - Response Models
-public struct LoginResponse: Codable {
-    public let token: String
-    public let user: User
-    public let expiresIn: TimeInterval?
+public struct ApiResponse<T: Codable>: Codable {
+    public let success: Bool
+    public let message: String
+    public let data: T
     
-    public init(token: String, user: User, expiresIn: TimeInterval? = nil) {
-        self.token = token
-        self.user = user
-        self.expiresIn = expiresIn
+    public init(success: Bool, message: String, data: T) {
+        self.success = success
+        self.message = message
+        self.data = data
     }
 }
 
-public struct RegisterResponse: Codable {
+public struct LoginData: Codable {
     public let token: String
     public let user: User
-    public let emailVerificationRequired: Bool
     
-    public init(token: String, user: User, emailVerificationRequired: Bool = false) {
+    public init(token: String, user: User) {
         self.token = token
         self.user = user
-        self.emailVerificationRequired = emailVerificationRequired
+    }
+}
+
+public struct RegisterData: Codable {
+    public let id: String
+    public let username: String
+    public let email: String
+    
+    public init(id: String, username: String, email: String) {
+        self.id = id
+        self.username = username
+        self.email = email
     }
 }
 
