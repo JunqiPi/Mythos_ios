@@ -2,8 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
-import TabNavigator from './src/navigation/TabNavigator';
+import RootNavigator from './src/navigation/RootNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
 
 function AppContent() {
@@ -20,7 +21,7 @@ function AppContent() {
   return (
     <>
       <NavigationContainer>
-        {isAuthenticated ? <TabNavigator /> : <AuthNavigator />}
+        {isAuthenticated ? <RootNavigator /> : <AuthNavigator />}
       </NavigationContainer>
       <StatusBar style="light" />
     </>
@@ -29,8 +30,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

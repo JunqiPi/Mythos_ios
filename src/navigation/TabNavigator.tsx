@@ -2,13 +2,14 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-// Screens
 import DiscoverScreen from '../screens/DiscoverScreen';
+import RankingScreen from '../screens/RankingScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 export type TabParamList = {
   Discover: undefined;
+  Ranking: undefined;
   Library: undefined;
   Profile: undefined;
 };
@@ -24,6 +25,8 @@ export default function TabNavigator() {
 
           if (route.name === 'Discover') {
             iconName = focused ? 'book' : 'book-outline';
+          } else if (route.name === 'Ranking') {
+            iconName = focused ? 'trophy' : 'trophy-outline';
           } else if (route.name === 'Library') {
             iconName = focused ? 'library' : 'library-outline';
           } else if (route.name === 'Profile') {
@@ -55,6 +58,13 @@ export default function TabNavigator() {
         component={DiscoverScreen}
         options={{
           title: 'Discover Books',
+        }}
+      />
+      <Tab.Screen
+        name="Ranking"
+        component={RankingScreen}
+        options={{
+          title: 'Rankings',
         }}
       />
       <Tab.Screen
